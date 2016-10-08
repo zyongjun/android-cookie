@@ -7,7 +7,8 @@ import dagger.Component;
 /**
  * Created by gzzyj on 2016/7/30.
  */
-@Component(modules = ActivityModule.class)
+@ActivityScope
+@Component(modules = ActivityModule.class,dependencies = AppComponent.class)
 public interface ActivityComponent {
     void inject(Dagger2Aty aty);
 

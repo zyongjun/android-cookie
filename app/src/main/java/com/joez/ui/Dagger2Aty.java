@@ -4,11 +4,10 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Button;
-
 import com.joez.dagger.ActivityModule;
+import com.joez.dagger.CookieApplication;
 import com.joez.dagger.DaggerActivityComponent;
 import com.joez.dagger.DaggerPresenter;
-
 import javax.inject.Inject;
 
 /**
@@ -23,7 +22,9 @@ public class Dagger2Aty extends BaseCookieActicity{
         super.onCookieCreate(savedInstanceState);
         setContentView(R.layout.activity_dagger);
         mBtn = (Button) findViewById(R.id.btn_mode);
-        DaggerActivityComponent.builder().activityModule(new ActivityModule(this)).build().inject(this);
+        DaggerActivityComponent.builder()
+                .appComponent(CookieApplication.getInstance().getAppComponent())
+                .activityModule(new ActivityModule(this)).build().inject(this);
         mPresenter.showUserName();
     }
 
