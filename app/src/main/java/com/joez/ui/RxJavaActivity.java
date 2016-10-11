@@ -2,13 +2,14 @@ package com.joez.ui;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
-
 import com.joez.presenter.RxJavaPresenter;
 import com.joez.view.IRxJavaView;
-
+import com.windhike.recyclerutils.RecyclerAdapter;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -24,6 +25,8 @@ public class RxJavaActivity extends BaseCookieActicity implements IRxJavaView {
     TextView tvCopy;
     @Bind(R.id.fab)
     FloatingActionButton fab;
+    @Bind(R.id.rv_rx)
+    RecyclerView rvRx;
     private RxJavaPresenter mPresenter;
 
     @Override
@@ -34,6 +37,9 @@ public class RxJavaActivity extends BaseCookieActicity implements IRxJavaView {
         ButterKnife.bind(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        rvRx.setLayoutManager(new LinearLayoutManager(this));
+        rvRx.setHasFixedSize(true);
+        rvRx.setAdapter(new RecyclerAdapter(mPresenter));
     }
 
     @OnClick(R.id.tv_copy)
@@ -44,7 +50,7 @@ public class RxJavaActivity extends BaseCookieActicity implements IRxJavaView {
     }
     @Override
     protected void onDestroy() {
-        mPresenter.onDetach();
+        mPresenter.detach();
         super.onDestroy();
     }
 

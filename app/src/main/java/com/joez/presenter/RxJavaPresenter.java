@@ -1,9 +1,8 @@
 package com.joez.presenter;
 
 import com.joez.view.IRxJavaView;
-
+import com.windhike.mvputils.BaseRecyclerPresenter;
 import rx.Observable;
-import rx.Scheduler;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
@@ -12,10 +11,15 @@ import rx.schedulers.Schedulers;
 /**
  * Created by Administrator on 2016/8/12 0012.
  */
-public class RxJavaPresenter extends BasePresenter<IRxJavaView>{
+public class RxJavaPresenter extends BaseRecyclerPresenter<IRxJavaView> {
 
     public RxJavaPresenter() {
 
+    }
+
+    @Override
+    public int getItemCount() {
+        return 0;
     }
 
     public void testSimpleRxCopy() {

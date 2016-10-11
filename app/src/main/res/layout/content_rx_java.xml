@@ -37,4 +37,9 @@
         android:textColor="@color/black"
         android:text="copy"/>
 
+    <android.support.v7.widget.RecyclerView
+        android:layout_below="@+id/tv_copy"
+        android:id="@+id/rv_rx"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 </RelativeLayout>
