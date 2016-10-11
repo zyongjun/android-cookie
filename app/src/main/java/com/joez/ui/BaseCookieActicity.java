@@ -1,5 +1,6 @@
 package com.joez.ui;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -65,5 +66,9 @@ public class BaseCookieActicity extends AppCompatActivity implements Navigator {
         transition.add(R.id.content,fragment,fragment.getClass().getSimpleName());
         transition.addToBackStack(null);
         transition.commit();
+    }
+
+    public Context getViewContext() {
+        return this;
     }
 }

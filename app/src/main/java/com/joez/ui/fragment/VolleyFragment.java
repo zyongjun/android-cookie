@@ -4,9 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.joez.presenter.BasePresenter;
 import com.joez.ui.R;
+import com.windhike.mvputils.BasePresenter;
 
 public class VolleyFragment extends BaseFragment {
 
@@ -31,7 +30,7 @@ public class VolleyFragment extends BaseFragment {
         return inflater.inflate(R.layout.fragment_volley, container, false);
     }
 
-    private static final class Presenter extends BasePresenter{
+    private static final class Presenter extends BasePresenter {
 
         public Presenter() {
 

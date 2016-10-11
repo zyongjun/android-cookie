@@ -1,6 +1,7 @@
 package com.joez.view;
 
-import com.joez.presenter.BasePresenter;
+
+import com.windhike.mvputils.BasePresenter;
 
 /**
  * Created by Administrator on 2016/6/11 0011.

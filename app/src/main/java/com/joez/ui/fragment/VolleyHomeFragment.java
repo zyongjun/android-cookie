@@ -14,12 +14,13 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.joez.presenter.BasePresenter;
 import com.joez.view.HttpView;
 import com.joez.presenter.Navigator;
 import com.joez.ui.CookieAdapter;
 import com.joez.ui.R;
 import com.joez.utils.OnRecyclerItemListener;
+import com.windhike.mvputils.BasePresenter;
+
 import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;

@@ -10,7 +10,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.joez.view.MainFunctionView;
+import com.windhike.mvputils.BasePresenter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,7 +20,7 @@ import java.util.Map;
 /**
  * Created by Administrator on 2016/6/11 0011.
  */
-public class MainFunctionPresenter extends BasePresenter{
+public class MainFunctionPresenter extends BasePresenter {
     private static final String TAG = "MainFunctionPresenter";
 
     public MainFunctionPresenter() {

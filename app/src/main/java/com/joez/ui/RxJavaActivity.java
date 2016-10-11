@@ -58,4 +58,9 @@ public class RxJavaActivity extends BaseCookieActicity implements IRxJavaView {
     public void updateResultDisplay(String message) {
         tvResult.setText(message);
     }
+
+    @Override
+    public void notifyDataChanged() {
+        rvRx.getAdapter().notifyDataSetChanged();
+    }
 }
