@@ -106,7 +106,8 @@ public class RxJavaPresenter extends BaseRecyclerPresenter<IRxJavaView> {
 //        sampling();
 
         //map
-        map();
+//        map();
+        flatmap();
     }
 
     private static final String TAG = "RxJavaPresenter";
@@ -418,6 +419,30 @@ public class RxJavaPresenter extends BaseRecyclerPresenter<IRxJavaView> {
                         return integer*10;
                     }
                 }).subscribe(new Observer<Integer>() {
+            @Override
+            public void onCompleted() {
+                Log.e(TAG, "onCompleted: ",null );
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.e(TAG, "onError: ",e );
+            }
+
+            @Override
+            public void onNext(Integer integer) {
+                Log.e(TAG, "onNext: "+integer,null );
+            }
+        });
+    }
+
+    private void flatmap() {
+        Observable.from(getData()).flatMap(new Func1<Integer, Observable<Integer>>() {
+            @Override
+            public Observable<Integer> call(Integer integer) {
+                return Observable.just(integer);
+            }
+        }).subscribe(new Observer<Integer>() {
             @Override
             public void onCompleted() {
                 Log.e(TAG, "onCompleted: ",null );
