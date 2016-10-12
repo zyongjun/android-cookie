@@ -10,11 +10,17 @@ import com.joez.view.holder.AppHolder;
 import com.windhike.mvputils.BaseRecyclerPresenter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import javax.security.auth.login.LoginException;
+
 import rx.Observable;
 import rx.Observer;
 import rx.Subscriber;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
+import rx.functions.Func0;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
@@ -38,7 +44,6 @@ public class RxJavaPresenter extends BaseRecyclerPresenter<IRxJavaView> {
 
     @Override
     public int getItemCount() {
-        Log.e(TAG, "getItemCount: ==="+mAppList.size() );
         return mAppList.size();
     }
 
@@ -86,6 +91,22 @@ public class RxJavaPresenter extends BaseRecyclerPresenter<IRxJavaView> {
     public void attach(IRxJavaView view) {
         super.attach(view);
         refreshList();
+//        just();
+//        repeat();
+//        defer();
+//        range();
+//        interval();
+//        timer();
+//        intervalDelay();
+//        filter();
+//        take();
+//        takeLast();
+//        distinct();
+//        elementAt();
+//        sampling();
+
+        //map
+        map();
     }
 
     private static final String TAG = "RxJavaPresenter";
@@ -93,20 +114,323 @@ public class RxJavaPresenter extends BaseRecyclerPresenter<IRxJavaView> {
         getApps().toSortedList().subscribe(new Observer<List<AppInfo>>() {
             @Override
             public void onCompleted() {
-                Log.e(TAG, "onCompleted: ------" );
             }
 
             @Override
             public void onError(Throwable e) {
                 e.printStackTrace();
-                Log.e(TAG, "onError: ===============");
             }
 
             @Override
             public void onNext(List<AppInfo> appInfos) {
-                Log.e(TAG, "onNext: ==============" );
                 mAppList.addAll(appInfos);
                 mView.notifyDataChanged();
+            }
+        });
+    }
+
+    public void just() {
+        Observable.just(1,2,3).subscribe(new Observer<Integer>() {
+            @Override
+            public void onCompleted() {
+                Log.e(TAG, "onCompleted: " );
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(Integer integer) {
+                Log.e(TAG, "onNext: ------"+integer );
+            }
+        });
+    }
+
+    public void repeat() {
+//        Observable.just(1,2).repeat(2).subscribe(new Observer<Integer>() {
+//            @Override
+//            public void onCompleted() {
+//                Log.e(TAG, "onCompleted: " );
+//            }
+//
+//            @Override
+//            public void onError(Throwable e) {
+//
+//            }
+//
+//            @Override
+//            public void onNext(Integer integer) {
+//                Log.e(TAG, "onNext: "+integer );
+//            }
+//        });
+    }
+
+    private Observable<Integer> getInt() {
+        return Observable.create(new Observable.OnSubscribe<Integer>() {
+
+            @Override
+            public void call(Subscriber<? super Integer> subscriber) {
+                if (subscriber.isUnsubscribed()) {
+                    return;
+                }
+                Log.e(TAG, "call: ------------------" );
+                subscriber.onNext(42);
+                subscriber.onCompleted();
+            }
+        });
+    }
+//delay obserable create until subscribed
+    public void defer() {
+        Observable defer = Observable.defer(new Func0<Observable<Integer>>() {
+            @Override
+            public Observable call() {
+                Log.e(TAG, "call: ==============defer call" );
+                return getInt();
+            }
+        });
+        defer.subscribe(new Action1<Integer>() {
+            @Override
+            public void call(Integer o) {
+                Log.e(TAG, "call: --------------------action"+o);
+            }
+        });
+    }
+
+    public void range() {
+        Observable.range(10,2).subscribe(new Observer<Integer>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(Integer integer) {
+                Log.e(TAG, "onNext: "+integer );
+            }
+        });
+    }
+
+    private void interval() {
+        Subscription stopmePlease = Observable.interval(3, TimeUnit.SECONDS).subscribe(new Observer<Long>() {
+            @Override
+            public void onCompleted() {
+                Log.e(TAG, "onCompleted: " );
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(Long aLong) {
+                Log.e(TAG, "onNext: "+aLong );
+            }
+        });
+
+    }
+
+    private void timer() {
+        Observable.timer(3,TimeUnit.SECONDS).subscribe(new Observer<Long>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(Long aLong) {
+                Log.e(TAG, "onNext: "+aLong );
+            }
+        });
+    }
+
+    private void intervalDelay() {
+        Observable.interval(3,4,TimeUnit.SECONDS).subscribe(new Observer<Long>() {
+            @Override
+            public void onCompleted() {
+                Log.e(TAG, "onCompleted: ");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(Long aLong) {
+                Log.e(TAG, "onNext: "+aLong );
+            }
+        });
+    }
+
+    private List<Integer> getData() {
+        List<Integer> list = new ArrayList<>();
+        for (int i = 0; i < 8; i++) {
+            list.add(i);
+        }
+        return list;
+    }
+    private void filter() {
+
+        Observable.from(getData()).filter(new Func1<Integer, Boolean>() {
+            @Override
+            public Boolean call(Integer integer) {
+                return integer%2==0;
+            }
+        }).subscribe(new Observer<Integer>() {
+            @Override
+            public void onCompleted() {
+                Log.e(TAG, "onCompleted: " );
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(Integer integer) {
+                Log.e(TAG, "onNext: "+integer );
+            }
+        });
+    }
+// take before count if not enough return have
+    private void take() {
+        Observable.from(getData()).take(5)
+                .subscribe(new Observer<Integer>() {
+                    @Override
+                    public void onCompleted() {
+                        Log.e(TAG, "onCompleted: " );
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e(TAG, "onError: " );
+                    }
+
+                    @Override
+                    public void onNext(Integer integer) {
+                        Log.e(TAG, "onNext: "+integer );
+                    }
+                });
+    }
+
+    private void takeLast() {
+        Observable.from(getData()).takeLast(8)
+                .subscribe(new Observer<Integer>() {
+                    @Override
+                    public void onCompleted() {
+                        Log.e(TAG, "onCompleted: " );
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e(TAG, "onError: " );
+                    }
+
+                    @Override
+                    public void onNext(Integer integer) {
+                        Log.e(TAG, "onNext: "+integer );
+                    }
+                });
+    }
+
+    private void distinct() {
+        Observable.from(getData())
+                .take(3).repeat(3)
+               .distinct().subscribe(new Observer<Integer>() {
+            @Override
+            public void onCompleted() {
+                Log.e(TAG, "onCompleted: ",null );
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.e(TAG, "onError: ",e);
+            }
+
+            @Override
+            public void onNext(Integer integer) {
+                Log.e(TAG, "onNext: "+integer );
+            }
+        });
+    }
+
+    private void elementAt() {
+//        Observable.from(getData()).elementAt(10)
+        Observable.from(getData()).elementAtOrDefault(10,10)
+                .subscribe(new Observer<Integer>() {
+                    @Override
+                    public void onCompleted() {
+                        Log.e(TAG, "onCompleted: ",null );
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e(TAG, "onError: ", null);
+                    }
+
+                    @Override
+                    public void onNext(Integer integer) {
+                        Log.e(TAG, "onNext: "+integer,null );
+                    }
+                });
+    }
+
+    private void sampling() {
+        Observable.from(getData())
+                .sample(2,TimeUnit.SECONDS)
+                .subscribe(new Observer<Integer>() {
+                    @Override
+                    public void onCompleted() {
+                        Log.e(TAG, "onCompleted: ",null );
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e(TAG, "onError: ",null );
+                    }
+
+                    @Override
+                    public void onNext(Integer integer) {
+                        Log.e(TAG, "onNext: "+integer,null );
+                    }
+                });
+    }
+
+    private void map() {
+        Observable.from(getData())
+                .map(new Func1<Integer, Integer>() {
+                    @Override
+                    public Integer call(Integer integer) {
+                        return integer*10;
+                    }
+                }).subscribe(new Observer<Integer>() {
+            @Override
+            public void onCompleted() {
+                Log.e(TAG, "onCompleted: ",null );
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.e(TAG, "onError: ",e );
+            }
+
+            @Override
+            public void onNext(Integer integer) {
+                Log.e(TAG, "onNext: "+integer,null );
             }
         });
     }

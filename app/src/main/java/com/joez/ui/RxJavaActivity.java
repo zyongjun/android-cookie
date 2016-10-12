@@ -28,18 +28,20 @@ public class RxJavaActivity extends BaseCookieActicity implements IRxJavaView {
     @Bind(R.id.rv_rx)
     RecyclerView rvRx;
     private RxJavaPresenter mPresenter;
+    private RecyclerAdapter mAdapter;
 
     @Override
     protected void onCookieCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_rx_java);
         mPresenter = new RxJavaPresenter();
-        mPresenter.attach(this);
         ButterKnife.bind(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         rvRx.setLayoutManager(new LinearLayoutManager(this));
         rvRx.setHasFixedSize(true);
-        rvRx.setAdapter(new RecyclerAdapter(mPresenter));
+        mAdapter = new RecyclerAdapter(mPresenter);
+        mPresenter.attach(this);
+        rvRx.setAdapter(mAdapter);
     }
 
     @OnClick(R.id.tv_copy)
@@ -61,6 +63,6 @@ public class RxJavaActivity extends BaseCookieActicity implements IRxJavaView {
 
     @Override
     public void notifyDataChanged() {
-        rvRx.getAdapter().notifyDataSetChanged();
+        mAdapter.notifyDataSetChanged();
     }
 }
