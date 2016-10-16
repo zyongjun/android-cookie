@@ -22,6 +22,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func0;
 import rx.functions.Func1;
+import rx.observables.GroupedObservable;
 import rx.schedulers.Schedulers;
 
 /**
@@ -107,7 +108,8 @@ public class RxJavaPresenter extends BaseRecyclerPresenter<IRxJavaView> {
 
         //map
 //        map();
-        flatmap();
+//        flatmap();
+        groupBy();
     }
 
     private static final String TAG = "RxJavaPresenter";
@@ -458,5 +460,43 @@ public class RxJavaPresenter extends BaseRecyclerPresenter<IRxJavaView> {
                 Log.e(TAG, "onNext: "+integer,null );
             }
         });
+    }
+
+    private List<AppInfo> getAppInfoTest() {
+        List<AppInfo> infos = new ArrayList<>();
+        for (int i = 0;i<10;i++) {
+            AppInfo appInfo = new AppInfo((char)(i+65)+"--mmbbcc",i,null);
+            infos.add(appInfo);
+        }
+        return infos;
+    }
+    private void groupBy() {
+        Observable<GroupedObservable<String,AppInfo>> groupItems = Observable.from(getAppInfoTest())
+                .groupBy(new Func1<AppInfo, String>() {
+                    @Override
+                    public String call(AppInfo appInfo) {
+                        if (((int) appInfo.getName().charAt(0)) % 2 == 0) {
+                            return "aaaa";
+                        }
+                        return "bbbb";
+                    }
+                });
+        Observable.concat(groupItems)
+                .subscribe(new Observer<AppInfo>() {
+                    @Override
+                    public void onCompleted() {
+                        Log.e(TAG, "onCompleted: ",null );
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(AppInfo appInfo) {
+                        Log.e(TAG, "onNext: --"+appInfo.getName(),null );
+                    }
+                });
     }
 }
