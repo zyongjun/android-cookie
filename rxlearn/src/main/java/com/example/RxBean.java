@@ -224,7 +224,12 @@ public class RxBean {
     }
 
     public void testFilter() {
-        Observable.from(generateEnd()).repeat(3)
+        Observable.from(generateEnd()).repeat(3).map(new Func1<String, String>() {
+            @Override
+            public String call(String s) {
+                return s+"1";
+            }
+        })
 //                .timeout(1,TimeUnit.SECONDS)
 //               .firstOrDefault("C")
 //                .distinctUntilChanged()
