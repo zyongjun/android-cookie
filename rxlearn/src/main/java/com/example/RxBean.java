@@ -259,4 +259,30 @@ public class RxBean {
             }
         });
     }
+
+    public void testFlatmap() {
+        Observable<String> o = Observable.just("a","b")
+                .flatMap(new Func1<String, Observable<String>>() {
+                    @Override
+                    public Observable<String> call(String s) {
+                        return Observable.just(s+"d");
+                    }
+                });
+        o.subscribe(new Subscriber<String>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(String r) {
+                        print(r);
+                    }
+                });
+    }
 }

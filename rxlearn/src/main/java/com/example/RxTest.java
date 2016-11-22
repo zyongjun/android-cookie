@@ -12,7 +12,15 @@ public class RxTest {
 //        rx.testRange();
 //        rx.testInterval();
 //        rx.testTimer();
-        rx.testFilter();
+//        rx.testFilter();
+//        rx.testFlatmap();
+
+        RxCreate create = new RxCreate();
+//        create.testCreate();
+//        create.testRange();
+//        create.testJust();
+//        create.testInterval();
+        create.testTimer();
     }
 
 }

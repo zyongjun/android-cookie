@@ -485,6 +485,7 @@ public class RxJavaPresenter extends BaseRecyclerPresenter<IRxJavaView> {
                 .subscribe(new Observer<AppInfo>() {
                     @Override
                     public void onCompleted() {
+                        Observable.Transformer
                         Log.e(TAG, "onCompleted: ",null );
                     }
 
