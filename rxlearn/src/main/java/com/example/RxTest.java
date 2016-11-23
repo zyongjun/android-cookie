@@ -25,7 +25,10 @@ public class RxTest {
         RxTransForm transForm = new RxTransForm();
 //        transForm.testBuffer();
 //        transForm.testFlatmap();
-        transForm.testFlagmapIterater();
+//        transForm.testFlagmapIterater();
+//        transForm.testGroupBy();
+//        transForm.testCast();
+        transForm.testScan();
     }
 
 }

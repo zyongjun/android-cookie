@@ -6,6 +6,8 @@ import java.util.List;
 import rx.Observable;
 import rx.functions.Action1;
 import rx.functions.Func1;
+import rx.functions.Func2;
+import rx.observables.GroupedObservable;
 
 /**
  * author: gzzyj on 2016/11/23.
@@ -79,5 +81,66 @@ public class RxTransForm {
 
                     }
                 });
+    }
+
+    public void testGroupBy() {
+        Observable.just(1,2,3,4,5,6,7,8,9)
+                .groupBy(new Func1<Integer, Integer>() {
+                    @Override
+                    public Integer call(Integer integer) {
+                        return integer%2;
+                    }
+                })
+        .subscribe(new Action1<GroupedObservable<Integer, Integer>>() {
+            @Override
+            public void call(GroupedObservable<Integer, Integer> result) {
+//                print("============="+result.getKey());
+                if(result.getKey() == 0) {
+                    result.subscribe(new Action1<Integer>() {
+                        @Override
+                        public void call(Integer integer) {
+                            print("=============" + result.getKey() + "---" + integer);
+                        }
+                    });
+                }
+            }
+        });
+    }
+
+    public void testMap() {
+        Observable.just(1,2,3,4)
+                .map(new Func1<Integer, Integer>() {
+                    @Override
+                    public Integer call(Integer integer) {
+                        return integer*2;
+                    }
+                });
+    }
+
+    public void testCast() {
+        Observable.just(1,2,3)
+                .cast(Integer.class)
+                .subscribe(new Action1<Integer>() {
+                    @Override
+                    public void call(Integer s) {
+                        print("--------"+s);
+                    }
+                });
+    }
+
+    public void testScan() {
+        Observable.just(1,2,3,4,5,6,7,8)
+                .scan(new Func2<Integer, Integer, Integer>() {
+                    @Override
+                    public Integer call(Integer integer, Integer integer2) {
+                        print("----"+integer+"---"+integer2);
+                        return integer*integer2;
+                    }
+                }).subscribe(new Action1<Integer>() {
+            @Override
+            public void call(Integer integer) {
+
+            }
+        });
     }
 }
