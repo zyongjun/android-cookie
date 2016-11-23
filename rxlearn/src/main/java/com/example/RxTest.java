@@ -20,7 +20,12 @@ public class RxTest {
 //        create.testRange();
 //        create.testJust();
 //        create.testInterval();
-        create.testTimer();
+//        create.testTimer();
+
+        RxTransForm transForm = new RxTransForm();
+//        transForm.testBuffer();
+//        transForm.testFlatmap();
+        transForm.testFlagmapIterater();
     }
 
 }
