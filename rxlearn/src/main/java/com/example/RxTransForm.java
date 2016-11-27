@@ -2,12 +2,15 @@ package com.example;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
+import rx.Observer;
 import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.functions.Func2;
 import rx.observables.GroupedObservable;
+import rx.schedulers.Schedulers;
 
 /**
  * author: gzzyj on 2016/11/23.
@@ -140,6 +143,48 @@ public class RxTransForm {
             @Override
             public void call(Integer integer) {
 
+            }
+        });
+    }
+
+    public void testWindow() {
+        Observable.just(1,2,3,4,5,6)
+                .window(2)
+                .subscribe(new Action1<Observable<Integer>>() {
+                    @Override
+                    public void call(Observable<Integer> integerObservable) {
+                        print("------call----");
+                        integerObservable.subscribe(new Action1<Integer>() {
+                            @Override
+                            public void call(Integer integer) {
+                                print("--------------"+integer);
+                            }
+                        });
+                    }
+                });
+    }
+
+    public void testSwitchMap() {
+        Observable.just(1,2,3,4,5,6)
+                .switchMap(new Func1<Integer, Observable<Integer>>() {
+                    @Override
+                    public Observable<Integer> call(Integer integer) {
+                        return Observable.just(integer).subscribeOn(Schedulers.newThread());
+                    }
+                }).subscribe(new Observer<Integer>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(Integer integer) {
+                print("------"+integer);
             }
         });
     }

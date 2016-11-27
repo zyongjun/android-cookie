@@ -28,7 +28,20 @@ public class RxTest {
 //        transForm.testFlagmapIterater();
 //        transForm.testGroupBy();
 //        transForm.testCast();
-        transForm.testScan();
+//        transForm.testScan();
+//        transForm.testWindow();
+//        transForm.testSwitchMap();
+        RxFilter filter = new RxFilter();
+//        filter.testDebound();
+//        filter.testDistinct();
+//        filter.testDistinctUtilChanged();
+//        filter.testFilter();
+//        filter.testElementAt();
+//        filter.testFirst();
+//        filter.testTake();
+//        filter.testThrottleLast();
+        RxCombining rxCombining = new RxCombining();
+        rxCombining.testCombiningLast();
     }
 
 }
