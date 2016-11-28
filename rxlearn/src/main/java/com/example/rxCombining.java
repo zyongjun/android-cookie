@@ -1,7 +1,11 @@
 package com.example;
 
+import java.util.concurrent.TimeUnit;
+
 import rx.Observable;
 import rx.Subscriber;
+import rx.functions.Action1;
+import rx.functions.Func1;
 import rx.functions.Func2;
 import rx.schedulers.Schedulers;
 
@@ -39,5 +43,29 @@ public class RxCombining {
                 return num1 + num2;
             }
         }).subscribe();
+    }
+
+    public void testJoin() {
+        Observable.just("left","left1").join(createObserver(1), new Func1<String, Observable<Long>>() {
+            @Override
+            public Observable<Long> call(String s) {
+                return Observable.timer(3000, TimeUnit.MILLISECONDS);
+            }
+        }, new Func1<Integer, Observable<Long>>() {
+            @Override
+            public Observable<Long> call(Integer integer) {
+                return Observable.timer(1000, TimeUnit.MILLISECONDS);
+            }
+        }, new Func2<String, Integer, String>() {
+            @Override
+            public String call(String s, Integer integer) {
+                return s+integer;
+            }
+        }).subscribe(new Action1<String>() {
+            @Override
+            public void call(String s) {
+                print("-------------next"+s);
+            }
+        });
     }
 }

@@ -41,7 +41,8 @@ public class RxTest {
 //        filter.testTake();
 //        filter.testThrottleLast();
         RxCombining rxCombining = new RxCombining();
-        rxCombining.testCombiningLast();
+//        rxCombining.testCombiningLast();
+        rxCombining.testJoin();
     }
 
 }
