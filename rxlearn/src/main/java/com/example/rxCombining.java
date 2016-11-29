@@ -1,5 +1,7 @@
 package com.example;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
@@ -117,5 +119,56 @@ public class RxCombining {
                         print("============"+integer);
                     }
                 });
+    }
+
+    public void testStartWith() {
+        List<Integer> list = new ArrayList<>();
+        list.add(3);
+        list.add(4);
+        list.add(5);
+        Observable.just(1,2,3)
+//                .startWith(3,4,5)
+//                .startWith(list)
+                .startWith(Observable.just(3,4,5))
+                .subscribe(new Action1<Integer>() {
+                    @Override
+                    public void call(Integer integer) {
+                        print("--------"+integer);
+                    }
+                });
+    }
+
+    public void testSwtich() {
+        Observable.switchOnNext(Observable.create(new Observable.OnSubscribe<Observable<Integer>>() {
+            @Override
+            public void call(Subscriber<? super Observable<Integer>> subscriber) {
+                for (int i=0;i<6;i++) {
+                    subscriber.onNext(Observable.create(new Observable.OnSubscribe<Integer>() {
+                        @Override
+                        public void call(Subscriber<? super Integer> subscriber) {
+                            for (int i =10;i<13;i++) {
+                                subscriber.onNext(i);
+                                try {
+                                    Thread.sleep(2000);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                    }).subscribeOn(Schedulers.newThread()));
+                    try {
+                        Thread.sleep(3000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        })).subscribe(new Action1<Integer>() {
+            @Override
+            public void call(Integer integer) {
+                print("---------------"+integer);
+            }
+        });
+
     }
 }

@@ -41,11 +41,13 @@ public class RxTest {
 //        filter.testTake();
 //        filter.testThrottleLast();
         RxCombining rxCombining = new RxCombining();
-//        rxCombining.testCombiningLast();
-//        rxCombining.testJoin();
-//        rxCombining.testMerge();
-//        rxCombining.testConcat();
-        rxCombining.testMergeDelayError();
+//        RxCombining.testCombiningLast();
+//        RxCombining.testJoin();
+//        RxCombining.testMerge();
+//        RxCombining.testConcat();
+//        rxCombining.testMergeDelayError();
+//        rxCombining.testStartWith();
+        rxCombining.testSwtich();
     }
 
 }
