@@ -42,7 +42,10 @@ public class RxTest {
 //        filter.testThrottleLast();
         RxCombining rxCombining = new RxCombining();
 //        rxCombining.testCombiningLast();
-        rxCombining.testJoin();
+//        rxCombining.testJoin();
+//        rxCombining.testMerge();
+//        rxCombining.testConcat();
+        rxCombining.testMergeDelayError();
     }
 
 }

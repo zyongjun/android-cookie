@@ -68,4 +68,54 @@ public class RxCombining {
             }
         });
     }
+
+    public void testMerge() {
+        Observable.merge(Observable.just(1,2,3),Observable.just(4,5,6))
+                .subscribe(new Action1<Integer>() {
+                    @Override
+                    public void call(Integer integer) {
+                        print("----------"+integer);
+                    }
+                });
+    }
+
+    public void testConcat() {
+        Observable.concat(Observable.just(1,2,3),Observable.just(4,5,6))
+                .subscribe(new Action1<Integer>() {
+                    @Override
+                    public void call(Integer integer) {
+                        print("-----------"+integer);
+                    }
+                });
+    }
+
+    public void testMergeDelayError() {
+        Observable.mergeDelayError(Observable.just(1,2,3),Observable.create(new Observable.OnSubscribe<Integer>() {
+            @Override
+            public void call(Subscriber<? super Integer> subscriber) {
+                for (int i= 11;i<16;i++) {
+                    if (i == 14) {
+                        subscriber.onError(new Throwable("onError"));
+                    }
+                    subscriber.onNext(i);
+                }
+            }
+        }),Observable.just(6,7,8))
+                .subscribe(new Subscriber<Integer>() {
+                    @Override
+                    public void onCompleted() {
+                        print("------completed");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        print("error:"+e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(Integer integer) {
+                        print("============"+integer);
+                    }
+                });
+    }
 }
