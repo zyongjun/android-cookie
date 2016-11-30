@@ -9,6 +9,7 @@ import rx.Subscriber;
 import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.functions.Func2;
+import rx.functions.FuncN;
 import rx.schedulers.Schedulers;
 
 /**
@@ -170,5 +171,61 @@ public class RxCombining {
             }
         });
 
+    }
+
+    public void testZip() {
+//        Observable.zip(Observable.just(1, 3, 3), Observable.just(3, 5, 6,7), new Func2<Integer, Integer, String>() {
+//            @Override
+//            public String call(Integer integer, Integer integer2) {
+//                return ""+integer+integer2;
+//            }
+//        })
+        List<Observable<Integer>> list = new ArrayList<>();
+        list.add(Observable.just(1,2,3));
+        list.add(Observable.just(1,4,3));
+        list.add(Observable.just(1,6,3));
+            Observable.zip(list, new FuncN<String>() {
+
+                @Override
+                public String call(Object... args) {
+                    for (Object arg : args) {
+                        print("=====call==="+arg);
+                    }
+                    return "";
+                }
+            })
+                .subscribe(new Action1<String>() {
+            @Override
+            public void call(String s) {
+                print("============"+s);
+            }
+        });
+
+    }
+
+    public void testZipWith() {
+        List<Integer> list = new ArrayList<>();
+        list.add(3);
+        list.add(4);
+        list.add(5);
+        Observable.just(1,2,3)
+                .zipWith(list, new Func2<Integer, Integer, String>() {
+                    @Override
+                    public String call(Integer integer, Integer integer2) {
+                        return ""+integer+integer2;
+                    }
+                })
+//                .zipWith(Observable.just(3, 4, 5), new Func2<Integer, Integer, String>() {
+//                    @Override
+//                    public String call(Integer integer, Integer integer2) {
+//                        return ""+integer+integer2;
+//                    }
+//                })
+                .subscribe(new Action1<String>() {
+            @Override
+            public void call(String s) {
+                print("========="+s);
+            }
+        });
     }
 }

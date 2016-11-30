@@ -47,7 +47,9 @@ public class RxTest {
 //        RxCombining.testConcat();
 //        rxCombining.testMergeDelayError();
 //        rxCombining.testStartWith();
-        rxCombining.testSwtich();
+//        rxCombining.testSwtich();
+//        rxCombining.testZip();
+        rxCombining.testZipWith();
     }
 
 }
