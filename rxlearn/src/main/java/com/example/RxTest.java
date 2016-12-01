@@ -49,7 +49,12 @@ public class RxTest {
 //        rxCombining.testStartWith();
 //        rxCombining.testSwtich();
 //        rxCombining.testZip();
-        rxCombining.testZipWith();
+//        rxCombining.testZipWith();
+
+        RxError rxError = new RxError();
+//        rxError.testCatch();
+//        rxError.testOnErrorResumeNext();
+        rxError.testOnExceptionResumeNext();
     }
 
 }
