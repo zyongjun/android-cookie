@@ -1,5 +1,7 @@
 package com.example;
 
+import java.io.IOException;
+
 import rx.Observable;
 import rx.Subscriber;
 import rx.functions.Action1;
@@ -99,7 +101,11 @@ public class RxError {
                 }
             }
         }).onExceptionResumeNext(Observable.just(10,11))
-                .subscribe(new Subscriber<Integer>() {
+                .subscribe(getIntegerSubscriber());
+    }
+
+    private Subscriber<Integer> getIntegerSubscriber() {
+        return new Subscriber<Integer>() {
             @Override
             public void onCompleted() {
                 print("==========onCompleted");
@@ -114,6 +120,32 @@ public class RxError {
             public void onNext(Integer integer) {
                 print("=====onNext======="+integer);
             }
-        });
+        };
+    }
+
+    public void testRetry() {
+        getErrorObservable().retry(2)
+                .subscribe(getIntegerSubscriber());
+    }
+
+    public void testRetryWhen() {
+        getErrorObservable().retryWhen(new Func1<Observable<? extends Throwable>, Observable<?>>() {
+            private int count;
+            @Override
+            public Observable<?> call(Observable<? extends Throwable> observable) {
+                count++;
+                return observable.flatMap(new Func1<Throwable, Observable<?>>() {
+                    @Override
+                    public Observable<?> call(Throwable throwable) {
+                        // For IOExceptions, we  retry
+                        if (throwable instanceof IOException) {
+                            return Observable.just(null);
+                        }
+                        // For anything else, don't retry
+                        return Observable.error(throwable);
+                    }
+                });
+            }
+        }).subscribe(getIntegerSubscriber());
     }
 }

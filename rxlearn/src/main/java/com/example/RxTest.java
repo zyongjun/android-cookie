@@ -54,7 +54,15 @@ public class RxTest {
         RxError rxError = new RxError();
 //        rxError.testCatch();
 //        rxError.testOnErrorResumeNext();
-        rxError.testOnExceptionResumeNext();
+//        rxError.testOnExceptionResumeNext();
+//        rxError.testRetry();
+//        rxError.testRetryWhen();
+
+        RxUtility rxUtility = new RxUtility();
+//        rxUtility.testDelay();
+//        rxUtility.testDo();
+//        rxUtility.testMaterialize();
+        rxUtility.testTimeInterval();
     }
 
 }
